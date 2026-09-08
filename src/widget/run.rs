@@ -1134,7 +1134,8 @@ mod tests {
     fn explicit_kimi_is_eligible_when_disabled_in_config() {
         use clap::Parser;
         let cli = Cli::parse_from(["ai-usagebar", "--vendor", "kimi"]);
-        let config = Config::default();
+        let mut config = Config::default();
+        config.kimi.enabled = false;
         let vendor = cli.resolve_vendor_with(&config, None);
         assert_eq!(vendor, Vendor::Kimi);
         assert!(dispatch_is_eligible(&cli, &config, vendor));
@@ -1144,8 +1145,9 @@ mod tests {
     fn implicit_disabled_vendor_is_not_dispatch_eligible() {
         let cli = cli_default();
         let config = Config::default();
-        assert!(!dispatch_is_eligible(&cli, &config, Vendor::Kimi));
-        // Normal implicit resolution avoids that disabled vendor entirely.
+        // Z.AI is opt-in (needs a key). An implicit dispatch must not fetch it.
+        assert!(!dispatch_is_eligible(&cli, &config, Vendor::Zai));
+        // Normal implicit resolution lands on the first default-on vendor.
         assert_eq!(cli.resolve_vendor_with(&config, None), Vendor::Anthropic);
     }
 

@@ -639,9 +639,11 @@ mod tests {
 
     #[test]
     fn primary_from_config_wins_when_vendor_unset() {
-        // No --vendor and no scroll-cycle override → [ui] primary wins.
+        // No --vendor and no scroll-cycle override → [ui] primary wins,
+        // provided that vendor is enabled (OpenRouter is opt-in).
         let cli = Cli::parse_from(["ai-usagebar"]);
         let mut cfg = crate::config::Config::default();
+        cfg.openrouter.enabled = true;
         cfg.ui.primary = Some(crate::vendor::VendorId::Openrouter);
         assert_eq!(cli.resolve_vendor_with(&cfg, None), Vendor::Openrouter);
     }
@@ -678,6 +680,7 @@ mod tests {
     fn disabled_kimi_primary_falls_back_to_an_enabled_vendor() {
         let cli = Cli::parse_from(["ai-usagebar"]);
         let mut cfg = crate::config::Config::default();
+        cfg.kimi.enabled = false;
         cfg.ui.primary = Some(crate::vendor::VendorId::Kimi);
         assert_eq!(cli.resolve_vendor_with(&cfg, None), Vendor::Anthropic);
     }
@@ -685,10 +688,9 @@ mod tests {
     #[test]
     fn explicit_kimi_remains_an_opt_in_override_when_disabled() {
         let cli = Cli::parse_from(["ai-usagebar", "--vendor", "kimi"]);
-        assert_eq!(
-            cli.resolve_vendor_with(&crate::config::Config::default(), None),
-            Vendor::Kimi
-        );
+        let mut cfg = crate::config::Config::default();
+        cfg.kimi.enabled = false;
+        assert_eq!(cli.resolve_vendor_with(&cfg, None), Vendor::Kimi);
     }
 
     #[test]
@@ -697,6 +699,8 @@ mod tests {
         // primary, as long as it is still enabled.
         let cli = Cli::parse_from(["ai-usagebar"]);
         let mut cfg = crate::config::Config::default();
+        cfg.openrouter.enabled = true;
+        cfg.zai.enabled = true;
         cfg.ui.primary = Some(crate::vendor::VendorId::Openrouter);
         let active = Some(crate::vendor::VendorId::Zai);
         assert_eq!(cli.resolve_vendor_with(&cfg, active), Vendor::Zai);
@@ -709,6 +713,7 @@ mod tests {
         let cli = Cli::parse_from(["ai-usagebar"]);
         let mut cfg = crate::config::Config::default();
         cfg.zai.enabled = false;
+        cfg.openrouter.enabled = true;
         cfg.ui.primary = Some(crate::vendor::VendorId::Openrouter);
         let active = Some(crate::vendor::VendorId::Zai);
         assert_eq!(cli.resolve_vendor_with(&cfg, active), Vendor::Openrouter);
