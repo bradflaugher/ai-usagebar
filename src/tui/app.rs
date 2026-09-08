@@ -901,13 +901,21 @@ mod tests {
         assert_eq!(app.overview_tabs(), vec![1]);
     }
 
-    fn config_with_accounts(labels: &[&str]) -> Config {
-        let mut config = Config::default();
-        // Keep only Anthropic enabled so the test asserts on account expansion,
-        // not on the full default vendor set.
+    fn disable_non_anthropic(config: &mut Config) {
+        // Keep only Anthropic enabled so tests assert on account expansion,
+        // not on this fork's default vendor set (Codex, Kimi, SuperGrok,
+        // Antigravity, plus any opt-in leftover).
         config.openai.enabled = false;
+        config.kimi.enabled = false;
+        config.supergrok.enabled = false;
+        config.antigravity.enabled = false;
         config.zai.enabled = false;
         config.openrouter.enabled = false;
+    }
+
+    fn config_with_accounts(labels: &[&str]) -> Config {
+        let mut config = Config::default();
+        disable_non_anthropic(&mut config);
         config.anthropic.accounts = labels
             .iter()
             .map(|l| crate::config::AnthropicAccount {
@@ -932,9 +940,7 @@ mod tests {
         // But with no named accounts it is kept, so Anthropic never loses its
         // only tab.
         let mut empty = Config::default();
-        empty.openai.enabled = false;
-        empty.zai.enabled = false;
-        empty.openrouter.enabled = false;
+        disable_non_anthropic(&mut empty);
         empty.anthropic.show_default_account = false;
         assert_eq!(
             tabs_from_config(&empty),
@@ -969,9 +975,9 @@ mod tests {
     #[test]
     fn tabs_expand_openrouter_accounts_without_changing_other_vendors() {
         let mut config = Config::default();
+        disable_non_anthropic(&mut config);
         config.anthropic.enabled = false;
-        config.openai.enabled = false;
-        config.zai.enabled = false;
+        config.openrouter.enabled = true;
         config.openrouter.accounts = vec![
             crate::config::OpenRouterAccount {
                 label: "work".into(),
@@ -997,9 +1003,9 @@ mod tests {
     #[test]
     fn openai_named_accounts_get_their_own_tabs_after_the_default() {
         let mut config = Config::default();
+        disable_non_anthropic(&mut config);
         config.anthropic.enabled = false;
-        config.zai.enabled = false;
-        config.openrouter.enabled = false;
+        config.openai.enabled = true;
         config.openai.accounts.push(crate::config::OpenAiAccount {
             label: "work".into(),
             codex_auth_path: "/tmp/codex-work/auth.json".into(),
@@ -1016,9 +1022,9 @@ mod tests {
     #[test]
     fn openrouter_can_hide_default_only_when_named_accounts_exist() {
         let mut config = Config::default();
+        disable_non_anthropic(&mut config);
         config.anthropic.enabled = false;
-        config.openai.enabled = false;
-        config.zai.enabled = false;
+        config.openrouter.enabled = true;
         config.openrouter.show_default_account = false;
         assert_eq!(
             tabs_from_config(&config),
@@ -1050,9 +1056,7 @@ mod tests {
             std::fs::write(dir.join(".credentials.json"), "{}").unwrap();
         }
         let mut config = Config::default();
-        config.openai.enabled = false;
-        config.zai.enabled = false;
-        config.openrouter.enabled = false;
+        disable_non_anthropic(&mut config);
         config.anthropic.accounts_dir = Some(td.path().to_path_buf());
 
         let tabs = tabs_from_config(&config);

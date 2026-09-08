@@ -5,10 +5,12 @@
 //! [anthropic]  enabled = true
 //! [openai]     enabled = true   # Codex OAuth from ~/.codex/auth.json
 //! [copilot]    enabled = false  # GitHub CLI OAuth, or an explicit env override
-//! [zai]        enabled = true
-//! [openrouter] enabled = true
+//! [zai]        enabled = false  # opt-in; needs an API key
+//! [openrouter] enabled = false  # opt-in; needs an API key
 //! [deepseek]   enabled = false
-//! [kimi]       enabled = false
+//! [kimi]       enabled = true   # Kimi Code CLI login is enough
+//! [supergrok]  enabled = true   # grok login is enough
+//! [antigravity] enabled = true  # local Antigravity/agy session is enough
 //! ```
 //!
 //! Every field is optional with sensible defaults — missing config file is
@@ -1667,7 +1669,8 @@ enabled = false
         let defaults = KimiConfig::default();
         assert_eq!(defaults.region, "auto");
         assert_eq!(defaults.credentials_path, None);
-        assert!(!defaults.enabled);
+        // On by default in this fork: a Kimi Code CLI login is enough.
+        assert!(defaults.enabled);
     }
 
     #[test]
@@ -2600,6 +2603,10 @@ enabled = false
             );
         }
 
+        // Login-based vendors this fork turns on by default have no inline key.
+        assert!(cfg.kimi.enabled && cfg.kimi.api_key.is_none());
+        assert!(cfg.supergrok.enabled);
+        assert!(cfg.antigravity.enabled);
         // The example must not ship anything enabled-by-key-only, and must not
         // carry a real secret.
         assert!(!cfg.anthropic_api.enabled && cfg.anthropic_api.api_key.is_none());
@@ -2607,7 +2614,6 @@ enabled = false
         assert!(!cfg.novita.enabled && cfg.novita.api_key.is_none());
         assert!(!cfg.moonshot.enabled && cfg.moonshot.api_key.is_none());
         assert!(!cfg.grok.enabled && cfg.grok.api_key.is_none());
-        assert!(!cfg.supergrok.enabled);
         assert_eq!(cfg.supergrok.grok_binary, default_grok_binary());
         assert_eq!(
             cfg.supergrok
