@@ -61,8 +61,8 @@ switches providers.
 Update or remove:
 
 ```bash
-omarchy plugin update brad.ai-usagebar
-omarchy plugin remove brad.ai-usagebar
+omarchy plugin update bradflaugher.ai-usagebar
+omarchy plugin remove bradflaugher.ai-usagebar
 ```
 
 ### From source
@@ -104,9 +104,9 @@ come from environment variables or `config.toml`.
 | OpenCode Go | API key | Enable `[opencode-go]`, then enter the key in settings or set the env var. |
 | Command Code | Existing `commandcode` or pi login | Enable `[commandcode]` and sign in once. |
 
-`enabled = true` is what makes a vendor fetch. Claude, Codex, Z.AI, and
-OpenRouter default to on; everything else is opt-in. Saving a non-empty API
-key in Settings also sets that vendor's `enabled = true`.
+`enabled = true` is what makes a vendor fetch. Claude, Codex, Kimi,
+SuperGrok, and Antigravity default to on; everything else is opt-in. Saving a
+non-empty API key in Settings also sets that vendor's `enabled = true`.
 
 Vendors that authenticate through a local login rather than a key — Cursor,
 Kiro, SuperGrok, Antigravity, Command Code, and Kimi with a CLI login — have
@@ -119,17 +119,20 @@ those tools already own; this crate reads them and does not write them back.
 ## Configuration
 
 `~/.config/ai-usagebar/config.toml` is optional. A minimal example that only
-fetches Claude, Codex, Antigravity, and SuperGrok:
+fetches Claude, Codex, Kimi, Antigravity, and SuperGrok:
 
 ```toml
 [ui]
 primary = "anthropic"
-overview_vendors = ["anthropic", "openai", "antigravity", "supergrok"]
+overview_vendors = ["anthropic", "openai", "kimi", "antigravity", "supergrok"]
 
 [anthropic]
 enabled = true
 
 [openai]
+enabled = true
+
+[kimi]
 enabled = true
 
 [zai]

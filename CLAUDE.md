@@ -173,7 +173,7 @@ vendor's response shape drifts:
   auto-signals waybar after save)
 - `src/tui/panels.rs` — native ratatui per-vendor panels
 - `src/widget/` — Waybar widget shell (CLI, render, pretty, run)
-- `manifest.json`, `omarchy/` — Omarchy 4 / Quattro plugin (`brad.ai-usagebar`)
+- `manifest.json`, `omarchy/` — Omarchy 4 / Quattro plugin (`bradflaugher.ai-usagebar`)
 - `src/tooltip.rs` — shared Pango bordered-box renderer (used by
   every vendor's tooltip)
 - `.github/workflows/release.yml` — tag-driven Linux release (x86_64 + aarch64)
