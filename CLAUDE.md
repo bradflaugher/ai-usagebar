@@ -123,9 +123,8 @@ vendor's response shape drifts:
 1. Capture the actual response (`curl -sH "Authorization: …" …`).
 2. Update the matching `types.rs` in `src/{anthropic,openai,zai,openrouter,deepseek}/`.
 3. Re-run `make smoke` until green.
-4. **Bump pkgrel (not pkgver) in both PKGBUILDs** — the user-visible
-   functionality is unchanged; it's a packaging update tracking a
-   silent upstream change.
+4. Tag a patch release if the parser change ships. This fork does not
+   publish AUR packages.
 
 ## What lives where
 

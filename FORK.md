@@ -5,7 +5,9 @@ Public Omarchy-focused fork of
 
 - Plugin id: `brad.ai-usagebar`
 - Frontends kept: Omarchy Quattro plugin, `ai-usagebar`, `ai-usagebar-tui`
-- Frontends dropped: GNOME, KDE, macOS menu bar, Nix flake, AUR packaging, Waybar docs
+- Frontends dropped: GNOME, KDE, macOS menu bar, Nix flake, AUR packaging
+- Waybar: the CLI can still emit JSON for it; this fork does not document or
+  support that path
 - Providers: all of them stay in the Rust crate. Enable what you use in
   `~/.config/ai-usagebar/config.toml`.
 

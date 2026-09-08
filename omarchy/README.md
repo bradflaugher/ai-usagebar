@@ -36,6 +36,28 @@ omarchy plugin update brad.ai-usagebar
 omarchy plugin remove brad.ai-usagebar
 ```
 
+### Switching from `akitaonrails.ai-usagebar`
+
+The plugin id changed. `omarchy plugin update` will not rename an existing
+upstream install or copy its `shell.json` widget settings. Remove the old
+id, then add this repo:
+
+```bash
+omarchy plugin remove akitaonrails.ai-usagebar --yes
+omarchy plugin add https://github.com/bradflaugher/ai-usagebar.git --enable --yes
+```
+
+Re-apply any bar options you had set on the old id (`provider`,
+`showValue`, `showProvider`, `refreshIntervalSec`) with
+`omarchy bar set brad.ai-usagebar …`. `~/.config/ai-usagebar/config.toml`
+does not need to change.
+
+Existing installations of **this** id (`brad.ai-usagebar`) need no
+migration: `config.toml`, environment-variable precedence, and the TUI
+are unchanged. If the plugin is updated before the `ai-usagebar` package,
+the form offers the terminal settings fallback until the binary has the
+native settings bridge.
+
 ## Controls
 
 - Bar: left-click opens the native Quattro usage panel; right-click
@@ -82,11 +104,6 @@ run `gh auth login --web` in a terminal. Complete the login, then choose
 through the fixed `gh auth token` command; it never parses GitHub CLI, editor,
 or browser credential stores and never saves a token. A non-empty
 `GITHUB_COPILOT_TOKEN` is an optional explicit override.
-
-Existing installations need no migration: `config.toml`, environment-variable
-precedence, and the TUI are unchanged. If the plugin is updated before the
-`ai-usagebar` package, the form offers the terminal settings fallback until the
-binary has the native settings bridge.
 
 The plugin's display-only options remain in `~/.config/omarchy/shell.json` and
 can be changed through Omarchy's bar UI or CLI:

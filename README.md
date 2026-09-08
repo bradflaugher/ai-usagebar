@@ -8,8 +8,10 @@ Native Quattro panel and tabbed TUI for AI plan usage across **Claude**,
 and other supported AI coding services.
 
 This fork keeps every provider in the Rust crate. It does **not** ship GNOME,
-KDE, macOS, Nix, or Waybar frontends. See [FORK.md](FORK.md) for how to pull
-upstream.
+KDE, macOS, or Nix frontends, and it does not document Waybar. The
+`ai-usagebar` binary can still print Waybar JSON when stdout is not a TTY;
+that path is leftover CLI behavior, not a supported frontend here. See
+[FORK.md](FORK.md) for how to pull upstream.
 
 ![Native Omarchy Quattro panel](screenshots/omarchy-quattro-panel.png)
 
