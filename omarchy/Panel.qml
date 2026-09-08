@@ -10,7 +10,7 @@ import "Model.js" as Model
 // its button as this panel's anchor; collection stays in the Rust binary.
 Panel {
   id: root
-  moduleName: "akitaonrails.ai-usagebar"
+  moduleName: "brad.ai-usagebar"
   manageIpc: false
 
   property var anchorItem: null

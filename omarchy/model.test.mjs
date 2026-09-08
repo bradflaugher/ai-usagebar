@@ -146,31 +146,31 @@ const priorWidgetSettings = {
   provider: '', refreshIntervalSec: 90, futureSetting: {keep: true}, id: 'stale-id'
 };
 const selectedWidgetSettings = model.settingsWithSelectedEntry(
-  priorWidgetSettings, 'akitaonrails.ai-usagebar', 'openrouter@personal');
+  priorWidgetSettings, 'brad.ai-usagebar', 'openrouter@personal');
 assert.deepEqual(JSON.parse(JSON.stringify(selectedWidgetSettings)), {
-  id: 'akitaonrails.ai-usagebar',
+  id: 'brad.ai-usagebar',
   provider: '',
   refreshIntervalSec: 90,
   futureSetting: {keep: true},
   lastSelectedEntryId: 'openrouter@personal'
 });
 assert.equal(priorWidgetSettings.lastSelectedEntryId, undefined);
-assert.equal(model.settingsWithSelectedEntry({}, 'akitaonrails.ai-usagebar', ''), null);
+assert.equal(model.settingsWithSelectedEntry({}, 'brad.ai-usagebar', ''), null);
 const hiddenValueSettings = model.settingsWithOverrides(
-  selectedWidgetSettings, 'akitaonrails.ai-usagebar', {showValue: false});
+  selectedWidgetSettings, 'brad.ai-usagebar', {showValue: false});
 assert.equal(hiddenValueSettings.showValue, false);
 assert.equal(hiddenValueSettings.lastSelectedEntryId, 'openrouter@personal');
 assert.equal(selectedWidgetSettings.showValue, undefined);
 const shownProviderSettings = model.settingsWithOverrides(
-  hiddenValueSettings, 'akitaonrails.ai-usagebar', {showProvider: true});
+  hiddenValueSettings, 'brad.ai-usagebar', {showProvider: true});
 assert.equal(shownProviderSettings.showProvider, true);
 assert.equal(shownProviderSettings.showValue, false);
 assert.equal(shownProviderSettings.lastSelectedEntryId, 'openrouter@personal');
 assert.equal(hiddenValueSettings.showProvider, undefined);
-const protectedSettings = model.settingsWithOverrides({}, 'akitaonrails.ai-usagebar', {
+const protectedSettings = model.settingsWithOverrides({}, 'brad.ai-usagebar', {
   id: 'wrong-id', constructor: 'ignored', prototype: 'ignored', showValue: false
 });
-assert.equal(protectedSettings.id, 'akitaonrails.ai-usagebar');
+assert.equal(protectedSettings.id, 'brad.ai-usagebar');
 assert.notEqual(protectedSettings.constructor, 'ignored');
 assert.equal(protectedSettings.prototype, undefined);
 assert.equal(model.booleanSetting(undefined, true), true);

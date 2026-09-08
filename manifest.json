@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "akitaonrails.ai-usagebar",
+  "id": "brad.ai-usagebar",
   "name": "AI Usage",
   "version": "1.11.0",
-  "author": "AkitaOnRails",
+  "author": "Brad Flaugher",
   "license": "MIT",
   "description": "Multi-provider AI plan usage and balances in a native Omarchy Quattro panel.",
   "kinds": [
